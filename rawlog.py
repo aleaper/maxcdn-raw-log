@@ -1,6 +1,10 @@
 #!/usr/bin/python
 
-# An actual working MaxCDN python script to pull raw log information from MaxCDNs API
+'''
+An actual working MaxCDN python script to pull raw log information from MaxCDNs API this is a slightly 
+altered version from https://www.maxcdn.com/one/tutorial/trivial-way-to-manage-maxcdn-account-with-python/ 
+A list of their APIs https://docs.maxcdn.com/
+'''
 
 from maxcdn import MaxCDN
 
@@ -14,7 +18,7 @@ while raw_input() != "exit":
                         option = "&" + option + "=" + value                                                                                                                                                                       
                 if zid != "":                                                                                                                                                                                                     
                         zid = "&zone_id=" + zid                                                                                                                                                                                   
-                # Needed to add zid to the bottom. Original did not have it listed
+                # Needed to add zid to this variable Original did not have it listed
 		data = api.get('/v3/reporting/logs.json?start=' + dfrom + '&end=' + dto + option + zid)                                                                                                                                 
                 records = data['records']                                                                                                                                                                                         
                 lines = len(records)                                                                                                                                                                                              
@@ -22,7 +26,13 @@ while raw_input() != "exit":
                         print "\nZone ID: "                                                                                                                                                                                       
                         print records[i]['zone_id']                                                                                                                                                                               
                         print "Source IP: "                                                                                                                                                                                       
-                        print records[i]['client_ip']                                                                                                                                                                             
+                        print records[i]['client_ip']
+       			
+			# Added the Time and Status
+			print "Time: "
+       			print records[i]['time']
+       			print "Status: "
+       			print records[i]['status']                                                                                                                                                                             
                         print "Uri: "                                                                                                                                                                                             
                         print records[i]['uri']                                                                                                                                                                                   
                         print "Referrer: "                                                                                                                                                                                        
