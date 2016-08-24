@@ -27,7 +27,6 @@ while raw_input() != "exit":
                         print records[i]['zone_id']                                                                                                                                                                               
                         print "Source IP: "                                                                                                                                                                                       
                         print records[i]['client_ip']
-       			
 			# Added the Time and Status
 			print "Time: "
        			print records[i]['time']
