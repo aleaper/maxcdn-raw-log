@@ -19,10 +19,16 @@ while raw_input() != "exit":
                 if zid != "":                                                                                                                                                                                                     
                         zid = "&zone_id=" + zid                                                                                                                                                                                   
                 # Needed to add zid to this variable Original did not have it listed
-		data = api.get('/v3/reporting/logs.json?start=' + dfrom + '&end=' + dto + option + zid)                                                                                                                                 
+		data = api.get('/v3/reporting/logs.json?limit=' + str('1000') + 'start=' + dfrom + '&end=' + dto + option + zid)                                                                                                                                 
                 records = data['records']                                                                                                                                                                                         
-                lines = len(records)                                                                                                                                                                                              
-                for i in range(0, lines):                                                                                                                                                                                         
+                lines = len(records)                                                                                                                                                                                             
+		# This will be to write the output into a file
+		import sys
+		orig_stdout = sys.stdout
+		file  = open("cdn-rawlog.txt", 'w')
+		sys.stdout = file 
+
+                for i in range(0, lines):                                                                                                                                                                                        
                         print "\nZone ID: "                                                                                                                                                                                       
                         print records[i]['zone_id']                                                                                                                                                                               
                         print "Source IP: "                                                                                                                                                                                       
@@ -35,7 +41,10 @@ while raw_input() != "exit":
                         print "Uri: "                                                                                                                                                                                             
                         print records[i]['uri']                                                                                                                                                                                   
                         print "Referrer: "                                                                                                                                                                                        
-                        print records[i]['referer']                                                                                                                                                                               
+                        print records[i]['referer']                                                                                                                                                                              
+		# This will close the file that the output went to 
+		sys.stdout = orig_stdout
+		file.close()			 
         print "--------------------------\nFilter Options - type the number in front of an option:\n--------------------------\n1. summary\n2. status codes\n3. referrers\n4. host names\n5. URi\n6. source ip\n"                 
         print "Type in the report type you need: "                                                                                                                                                                                
         type = raw_input()                                                                                                                                                                                                        
@@ -97,4 +106,4 @@ while raw_input() != "exit":
                 print "Source IP: \n"
                 cip = raw_input()
                 fetch(dfrom, dto, "client_ip", cip, zid)
-        print "Hit [enter] to return to menu or type 'exit' to go back"
+        print "Make sure to check the file cdn-rawlog.txt. Hit [enter] to return to menu or type 'exit' to go back"
